@@ -23,6 +23,7 @@ void GameScene::Update() {
 	//座標を{ 2, 1 }移動
 	position.x += 2.0f;
 	position.y += 1.0f;
+	//
 	sprite_->SetPosition(position);
 }
 
