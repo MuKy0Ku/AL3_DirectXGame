@@ -2,6 +2,7 @@
 #include"Model.h"
 #include"WorldTransform.h"
 #include"ViewProjection.h"
+#include"Input.h"
 
 class Player {
 public:

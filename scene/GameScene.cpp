@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
+#include"ImGuiManager.h"
 
 GameScene::GameScene() {}
 
@@ -14,15 +15,16 @@ void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
-	playeyrHandle_ = TextureManager::Load("sample.png");
+	playerHandle_ = TextureManager::Load("sample.png");
 	model_ = Model::Create();
 	viewProjection_.Initialize();
 	player_ = new Player();
-	player_->Initialize(model_, playeyrHandle_);
+	player_->Initialize(model_, playerHandle_);
 }
 
 void GameScene::Update() { 
 	player_->Update();
+	
 }
 
 void GameScene::Draw() {
