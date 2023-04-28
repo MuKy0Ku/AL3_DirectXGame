@@ -9,6 +9,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include"Player.h"
+#include"DebugCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -17,7 +18,7 @@ class GameScene {
 
 public: // メンバ関数
 	/// <summary>
-	/// コンストクラタ
+	/// コンストクラタ  
 	/// </summary>
 	GameScene();
 
@@ -53,4 +54,8 @@ private: // メンバ変数
 	Model* model_ = nullptr;
 	ViewProjection viewProjection_;
 	Player* player_ = nullptr;
+	//デバッグカメラ有効
+	bool isDebugCameraActive_ = false;
+	//デバッグカメラ
+	DebugCamera* debugCamera_ = nullptr;
 };
