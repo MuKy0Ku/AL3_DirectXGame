@@ -34,6 +34,24 @@ void Player::Update() {
 	} else if (input_->PushKey(DIK_DOWN)) {
 		move.y -= kCharacterSpeed;
 	}
+	
+	//キャラクター旋回
+	//押した方向で移動ベクトルを変更
+    const float kRotSpeed = 0.02f;
+	if (input_->PushKey(DIK_A)) {
+		worldTransform_.rotation_.y -= kRotSpeed;
+	}
+	if (input_->PushKey(DIK_D)) {
+		worldTransform_.rotation_.y += kRotSpeed;
+	}
+
+	//キャラクター攻撃処理
+	Attack();
+
+	//弾更新
+	if (bullet_) {
+		bullet_->Update();
+	}
 
 	//移動限界座標
 	const float kMoveLimitX = 20.0f;
@@ -73,8 +91,18 @@ void Player::Update() {
 void Player::Draw(ViewProjection& viewProjection) { 
 
     model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	if (bullet_) {
+		bullet_->Draw(viewProjection);
+	}
+}
 
+void Player::Attack() { 
+	if (input_->TriggerKey(DIK_SPACE)) {
+		//弾を生成し、初期化
+		PlayerBullet* newBullet = new PlayerBullet();
+		newBullet->Initialize(model_, worldTransform_.translation_);
 
-
-	
+		//弾を登録する
+		bullet_ = newBullet;
+	}
 }
