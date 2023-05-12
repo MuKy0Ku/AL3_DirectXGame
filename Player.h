@@ -25,6 +25,10 @@ public:
 	void Draw(ViewProjection&viewProjection);
 
 	void Attack();
+    /// <summary>
+    /// デストラクタ
+    /// </summary>
+	/// ~Player();
  private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
