@@ -4,11 +4,17 @@
 #include"ViewProjection.h"
 #include"Input.h"
 #include"PlayerBullet.h"
+#include<list>
 
 
 
 class Player {
 public:
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~Player();
+	
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -25,10 +31,8 @@ public:
 	void Draw(ViewProjection&viewProjection);
 
 	void Attack();
-    /// <summary>
-    /// デストラクタ
-    /// </summary>
-	/// ~Player();
+    
+	
  private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
@@ -40,7 +44,8 @@ public:
 	Input* input_ = nullptr;
 
 	//弾
-	PlayerBullet* bullet_ = nullptr;
+	std::list<PlayerBullet*> bullets_;
+	//PlayerBullet* bullet_ = nullptr;
 
 	
 };

@@ -1,7 +1,14 @@
 ﻿#include "Player.h"
-#include<assert.h>
+#include<cassert>
 #include"ImGuiManager.h"
+#include"Input.h"
 
+
+Player::~Player() {
+	for (PlayerBullet* bullet : bullets_) {
+		delete bullet;
+	}
+}
 
 void Player::Initialize(Model* model, uint32_t textureHandle) { 
 	assert(model);
@@ -49,8 +56,8 @@ void Player::Update() {
 	Attack();
 
 	//弾更新
-	if (bullet_) {
-		bullet_->Update();
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Update();
 	}
 
 	//移動限界座標
@@ -90,8 +97,8 @@ void Player::Update() {
 
 void Player::Draw(ViewProjection& viewProjection) { 
     model_->Draw(worldTransform_, viewProjection, textureHandle_);
-	if (bullet_) {
-		bullet_->Draw(viewProjection);
+	for (PlayerBullet*bullet : bullets_) {
+		bullet->Draw(viewProjection);
 	}
 }
 
@@ -100,8 +107,9 @@ void Player::Attack() {
 		//弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_, worldTransform_.translation_);
-
 		//弾を登録する
-		bullet_ = newBullet;
+		bullets_.push_back(newBullet);
 	}
 }
+
+
