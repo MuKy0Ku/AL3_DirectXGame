@@ -25,8 +25,7 @@ public:
 	void Draw(ViewProjection&viewProjection);
 
 	void Attack();
-
-private:
+ private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
 	//モデル
@@ -38,4 +37,6 @@ private:
 
 	//弾
 	PlayerBullet* bullet_ = nullptr;
+
+	
 };
