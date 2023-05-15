@@ -3,6 +3,7 @@
 #include <cassert>
 #include"ImGuiManager.h"
 #include"AxisIndicator.h"
+#include"MathUtility.h"
 
 GameScene::GameScene() {}
 
@@ -10,6 +11,7 @@ GameScene::~GameScene() {
 	delete model_; 
 	delete player_;
 	delete debugCamera_;
+	delete enemy_;
 }
 
 void GameScene::Initialize() {
@@ -25,6 +27,8 @@ void GameScene::Initialize() {
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+	enemy_ = new Enemy();
+	enemy_->Initialize(model_, enemyPos_);
 }
 
 void GameScene::Update() { 
@@ -47,6 +51,10 @@ void GameScene::Update() {
 	} else {
 		//ビュープロジェクション行列の更新と転送
 		viewProjection_.UpdateMatrix();
+	}
+	enemy_->Update();
+	if (enemy_) {
+		
 	}
 }
 
@@ -78,7 +86,10 @@ void GameScene::Draw() {
 	/// </summary>
 	//model_->Draw(worldTransform_, viewProjection_, playeyrHandle_);
 	player_->Draw(viewProjection_);
-
+	enemy_->Draw(viewProjection_);
+	if (enemy_) {
+		
+	}
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
