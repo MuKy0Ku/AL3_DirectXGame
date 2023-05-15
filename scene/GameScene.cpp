@@ -52,9 +52,9 @@ void GameScene::Update() {
 		//ビュープロジェクション行列の更新と転送
 		viewProjection_.UpdateMatrix();
 	}
-	enemy_->Update();
+	
 	if (enemy_) {
-		
+		enemy_->Update();
 	}
 }
 
@@ -86,9 +86,9 @@ void GameScene::Draw() {
 	/// </summary>
 	//model_->Draw(worldTransform_, viewProjection_, playeyrHandle_);
 	player_->Draw(viewProjection_);
-	enemy_->Draw(viewProjection_);
+	
 	if (enemy_) {
-		
+		enemy_->Draw(viewProjection_);
 	}
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
