@@ -13,11 +13,33 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 }
 
 void Enemy::Update() { 
-	worldTransform_.translation_.z -= 0.3f;
+	//worldTransform_.translation_.z -= 0.3f;
+
+	switch (phase_) {
+	case Enemy::Phase::Approach:
+	default:
+		ApproachUpdate();
+		if (worldTransform_.translation_.z < 0.0f) {
+			phase_ = Phase::Leave;
+		}
+		break;
+	case Enemy::Phase::Leave:
+		LeaveUpdate();
+		break;
+	}
 
 	worldTransform_.UpdateMatrix();
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHundle_);
+}
+
+void Enemy::ApproachUpdate() { 
+	worldTransform_.translation_.z -= 0.3f; 
+}
+
+void Enemy::LeaveUpdate() { 
+	worldTransform_.translation_.x -= 0.2f;
+	worldTransform_.translation_.y += 0.2f; 
 }
