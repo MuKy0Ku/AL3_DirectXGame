@@ -12,8 +12,10 @@ public:
 
 	void Draw(const ViewProjection& viewProjection);
 
+	//接近
 	void ApproachUpdate();
 
+	//離脱
 	void LeaveUpdate();
 
 private:
