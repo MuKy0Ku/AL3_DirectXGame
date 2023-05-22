@@ -35,7 +35,7 @@ public:
 	static const int kFireInterval = 60;
 
 	//接近フェーズ初期化
-	void aaaa();
+	void ApproachInitialize();
 
 private:
 	WorldTransform worldTransform_;

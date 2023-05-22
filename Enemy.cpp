@@ -21,7 +21,7 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 	// 引数で受け取った初期座標をセット
 	worldTransform_.translation_ = position;
 	
-	aaaa();
+	ApproachInitialize();
 }
 
 void Enemy::Update() { 
@@ -91,7 +91,7 @@ void Enemy::Fire() {
 	bullets_.push_back(newBullet);
 }
 
-void Enemy::aaaa() {
+void Enemy::ApproachInitialize() {
 	//発射タイマーを初期化
 	fireTimer = kFireInterval;
 }
