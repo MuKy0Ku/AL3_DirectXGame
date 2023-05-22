@@ -7,9 +7,9 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vecto
 
 	textureHundle_ = TextureManager::Load("black.png");
 
-	world_.Initialize();
+	worldTransform_.Initialize();
 	//引数で受け取った初期座標をリセット
-	world_.translation_ = position;
+	worldTransform_.translation_ = position;
 	//引数で受け取った速度をメンバ変数に代入
 	velocity_ = velocity;
 }
@@ -17,11 +17,11 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vecto
 void PlayerBullet::Update() 
 { 
 	//座標を移動させる(1フレーム分の移動量を足しこむ)
-	world_.translation_.x += velocity_.x;
-	world_.translation_.y += velocity_.y;
-	world_.translation_.z += velocity_.z;
+	worldTransform_.translation_.x += velocity_.x;
+	worldTransform_.translation_.y += velocity_.y;
+	worldTransform_.translation_.z += velocity_.z;
 
-	world_.UpdateMatrix();
+	worldTransform_.UpdateMatrix();
 
 	//時間経過でデス
 	if (--deathTimer_ <= 0) {
@@ -31,5 +31,5 @@ void PlayerBullet::Update()
 
 void PlayerBullet::Draw(const ViewProjection& viewProjection) 
 {
-	model_->Draw(world_, viewProjection, textureHundle_);
+	model_->Draw(worldTransform_, viewProjection, textureHundle_);
 }

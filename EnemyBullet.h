@@ -4,7 +4,7 @@
 #include"ViewProjection.h"
 #include"WorldTransform.h"
 
-class PlayerBullet {
+class EnemyBullet {
 public:
 	void Initialize(Model* model, const Vector3& position, const Vector3& velocity);
 
@@ -19,12 +19,12 @@ private:
 	Model* model_;
 	uint32_t textureHundle_;
 
-	//速度
+	// 速度
 	Vector3 velocity_;
-	//寿命<frm>
+	// 寿命<frm>
 	static const int32_t klifeTime = 60 * 5;
-	//デスタイマー
+	// デスタイマー
 	int32_t deathTimer_ = klifeTime;
-	//デスフラグ
+	// デスフラグ
 	bool isDead_ = false;
 };

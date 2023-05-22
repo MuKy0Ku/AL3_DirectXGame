@@ -62,5 +62,5 @@ private: // メンバ変数
 	//敵
 	Enemy* enemy_ = nullptr;
 	WorldTransform worldTransform_;
-	Vector3 enemyPos_ = {0, 2, 50};
+	Vector3 enemyPos_ = {10, 2, 50};
 };
