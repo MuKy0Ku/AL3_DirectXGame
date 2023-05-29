@@ -4,7 +4,6 @@
 #include"ImGuiManager.h"
 #include"AxisIndicator.h"
 #include"MathUtility.h"
-#include<list>
 
 GameScene::GameScene() {}
 
@@ -117,7 +116,9 @@ void GameScene::CheckAllCollisions() {
 	//判定対象AとBの座標
 	Vector3 posA, posB;
 
+	//自弾リストの取得
 	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
+	//敵弾リストの取得
 	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
 
 	//自キャラと敵弾の当たり判定
@@ -130,8 +131,47 @@ void GameScene::CheckAllCollisions() {
 		float c = ((posA.x - posB.x) * (posA.x - posB.x) + (posA.y - posB.y) * (posA.y - posB.y) +
 		     (posA.z - posB.z) * (posA.z - posB.z));
 		if (c <= enemy_->GetRadius() + player_->GetRadius()) {
+			//自キャラの衝突時コールバックを呼び出す
 			player_->OnCollision();
+			// 敵弾の衝突時コールバックを呼び出す
 			bullet->OnCollision();
+		}
+	}
+
+	// 自弾と敵キャラの当たり判定
+    #pragma region
+    #pragma endregion
+	posA = enemy_->GetWorldPosition();
+
+	for (PlayerBullet* bullet : playerBullets) {
+		posB = bullet->GetWorldPosition();
+		float c =
+		    ((posA.x - posB.x) * (posA.x - posB.x) + (posA.y - posB.y) * (posA.y - posB.y) +
+		     (posA.z - posB.z) * (posA.z - posB.z));
+		if (c <= enemy_->GetRadius() + player_->GetRadius()) {
+			// 敵キャラの衝突時コールバックを呼び出す
+			enemy_->OnCollision();
+			// 自弾の衝突時コールバックを呼び出す
+			bullet->OnCollision();
+		}
+	}
+
+	// 自弾と敵弾の当たり判定
+    #pragma region
+    #pragma endregion
+	for (PlayerBullet* bulletA : playerBullets) {
+		for (EnemyBullet* bulletB : enemyBullets) {
+		posA = bulletA->GetWorldPosition();
+		posB = bulletB->GetWorldPosition();
+		float c =
+		    ((posA.x - posB.x) * (posA.x - posB.x) + (posA.y - posB.y) * (posA.y - posB.y) +
+		     (posA.z - posB.z) * (posA.z - posB.z));
+		if (c <= enemy_->GetRadius() + player_->GetRadius()) {
+			// 自弾の衝突時コールバックを呼び出す
+			bulletA->OnCollision();
+			// 敵弾の衝突時コールバックを呼び出す
+			bulletB->OnCollision();
+		}
 		}
 	}
 }
