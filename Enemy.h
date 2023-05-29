@@ -6,6 +6,9 @@
 #include"EnemyBullet.h"
 #include"Input.h"
 #include<list>
+//#include<Player.h>
+//自機クラスの前方宣言
+class Player;
 
 class Enemy {
 public:
@@ -37,6 +40,11 @@ public:
 	//接近フェーズ初期化
 	void ApproachInitialize();
 
+	void SetPlayer(Player* player) { player_ = player; }
+
+	// ワールド座標を取得
+	Vector3 GetWorldPosition();
+
 private:
 	WorldTransform worldTransform_;
 	Model* model_;
@@ -58,4 +66,7 @@ private:
 
 	//発射タイマー
 	int32_t fireTimer = 0;
+
+	//自キャラ
+	Player* player_ = nullptr;
 };

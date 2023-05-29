@@ -4,6 +4,8 @@
 #include"Input.h"
 #include"MathUtility.h"
 #include"EnemyBullet.h"
+#include"Player.h"
+#include<cmath>
 
 Enemy::~Enemy() {
 	for (EnemyBullet* bullet : bullets_) {
@@ -80,9 +82,20 @@ void Enemy::LeaveUpdate() {
 }
 
 void Enemy::Fire() {
+	assert(player_);
 	// 弾の速度
 	const float kBulletSpeed = 1.0f;
-	Vector3 velocity(0, 0, kBulletSpeed);
+
+	Vector3 playerPos;
+	Vector3 diff;
+	playerPos = player_->Player::GetWorldPosition();
+	diff.x = playerPos.x - worldTransform_.translation_.x;
+	diff.y = playerPos.y - worldTransform_.translation_.y;
+	diff.z = playerPos.z - worldTransform_.translation_.z;
+	float length = sqrtf((diff.x * diff.x) + (diff.y * diff.y) + (diff.z * diff.z));
+	Vector3 dir(diff.x / length, diff.y / length, diff.z / length);
+	Vector3 velocity(dir.x * kBulletSpeed, dir.y * kBulletSpeed, dir.z * kBulletSpeed);
+
 	// 弾を生成し、初期化
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->Initialize(model_, worldTransform_.translation_,velocity);
@@ -94,4 +107,15 @@ void Enemy::Fire() {
 void Enemy::ApproachInitialize() {
 	//発射タイマーを初期化
 	fireTimer = kFireInterval;
+}
+
+Vector3 Enemy::GetWorldPosition() { 
+	// ワールド座標を入れる変数
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得(ワールド座標)
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
+
+	return worldPos; 
 }
