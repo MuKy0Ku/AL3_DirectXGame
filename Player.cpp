@@ -130,6 +130,8 @@ void Player::Attack() {
 	}
 }
 
+void Player::OnCollision() {}
+
 Vector3 Player::GetWorldPosition() { 
 	//ワールド座標を入れる変数
 	Vector3 worldPos{};

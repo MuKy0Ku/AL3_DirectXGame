@@ -4,6 +4,7 @@
 #include"ImGuiManager.h"
 #include"AxisIndicator.h"
 #include"MathUtility.h"
+#include<list>
 
 GameScene::GameScene() {}
 
@@ -59,6 +60,7 @@ void GameScene::Update() {
 	if (enemy_) {
 		enemy_->Update();
 	}
+	CheckAllCollisions();
 }
 
 void GameScene::Draw() {
@@ -109,4 +111,27 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::CheckAllCollisions() { 
+	//判定対象AとBの座標
+	Vector3 posA, posB;
+
+	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
+	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
+
+	//自キャラと敵弾の当たり判定
+    #pragma region
+	#pragma endregion
+	posA = player_->GetWorldPosition();
+	
+	for (EnemyBullet*bullet : enemyBullets) {
+		posB = bullet->GetWorldPosition();
+		float c = ((posA.x - posB.x) * (posA.x - posB.x) + (posA.y - posB.y) * (posA.y - posB.y) +
+		     (posA.z - posB.z) * (posA.z - posB.z));
+		if (c <= enemy_->GetRadius() + player_->GetRadius()) {
+			player_->OnCollision();
+			bullet->OnCollision();
+		}
+	}
 }
