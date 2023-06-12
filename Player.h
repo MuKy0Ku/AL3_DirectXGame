@@ -18,7 +18,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Model*model,uint32_t textureHandle);
+	void Initialize(Model* model, uint32_t textureHandle, const Vector3& position);
 
 	/// <summary>
 	/// 更新
@@ -34,6 +34,11 @@ public:
     
 	//衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
+
+	/// <summary>
+	/// 親となるワールドトランスフォームをセット
+	/// </summary>
+	void SetParent(const WorldTransform* parent);
 	
 	// ワールド座標を取得
 	Vector3 GetWorldPosition();
