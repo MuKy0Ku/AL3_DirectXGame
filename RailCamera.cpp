@@ -10,7 +10,7 @@ void RailCamera::Initialize(Vector3 trans, Vector3 rot) {
 }
 
 void RailCamera::Update() { 
-	Vector3 move = {0, 0, 0.1f};
+	Vector3 move = {0, 0, 0.0f};
 	Vector3 rot = {0, 0, 0};
 
 	worldTransform_.translation_.x += move.x;
@@ -40,7 +40,7 @@ void RailCamera::Update() {
 	    worldTransform_.rotation_.z,
 	};
 	ImGui::SliderFloat3("transration", sliderValue, -100.0f, 100.0f);
-	ImGui::SliderFloat3("rotation", sliderValueRot, -3.0f, 3.0f);
+	ImGui::SliderFloat3("rotation", sliderValueRot, -1.0f, 1.0f);
 	worldTransform_.translation_ = {sliderValue[0], sliderValue[1], sliderValue[2]};
 	worldTransform_.rotation_ = {sliderValueRot[0], sliderValueRot[1], sliderValueRot[2]};
 	ImGui::End();

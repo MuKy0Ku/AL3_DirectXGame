@@ -10,6 +10,9 @@
 //自機クラスの前方宣言
 class Player;
 
+//GameSceneの前方宣言
+class  GameScene;
+
 class Enemy {
 public:
 	/// <summary>
@@ -42,8 +45,11 @@ public:
 
 	void SetPlayer(Player* player) { player_ = player; }
 
+	void SetGameScene(GameScene* gameScene) { gamescene_ = gameScene; }
+
 	// 衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
+	bool IsDead() const { return isDead_; }
 
 	// ワールド座標を取得
 	Vector3 GetWorldPosition();
@@ -52,7 +58,7 @@ public:
 	const float radius_ = 1.0f;
 
 	// 弾リストを取得
-	const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
+	//const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
 
 private:
 	WorldTransform worldTransform_;
@@ -67,7 +73,7 @@ private:
 	Phase phase_ = Phase::Approach;
 
 	//弾
-	std::list<EnemyBullet*> bullets_;
+	//std::list<EnemyBullet*> bullets_;
 	//EnemyBullet* bullet_ = nullptr;
 
 	// キーボード入力
@@ -79,5 +85,13 @@ private:
 	//自キャラ
 	Player* player_ = nullptr;
 
-	
+	//ゲームシーン
+	GameScene* gamescene_ = nullptr;
+
+	// 寿命<frm>
+	//static const int32_t klifeTime = 60 * 5;
+	// デスタイマー
+	int32_t deathTimer_ = 300;
+	// デスフラグ
+	bool isDead_ = false;
 };

@@ -6,11 +6,10 @@
 #include"EnemyBullet.h"
 #include"Player.h"
 #include<cmath>
+#include"GameScene.h"
 
 Enemy::~Enemy() {
-	for (EnemyBullet* bullet : bullets_) {
-		delete bullet;
-	}
+	
 }
 
 void Enemy::Initialize(Model* model, const Vector3& position) { 
@@ -24,17 +23,13 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 	worldTransform_.translation_ = position;
 	
 	ApproachInitialize();
+
+	
 }
 
 void Enemy::Update() { 
 	// デスフラグの立った弾を削除
-	bullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->IsDead()) {
-			delete bullet;
-			return true;
-		}
-		return false;
-	});
+	
 
 	switch (phase_) {
 	case Enemy::Phase::Approach:
@@ -48,23 +43,18 @@ void Enemy::Update() {
 		LeaveUpdate();
 		break;
 	}
-	// 弾更新
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Update();
-	}
+	
 
 	worldTransform_.UpdateMatrix();
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHundle_);
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Draw(viewProjection);
-	}
+	
 }
 
 void Enemy::ApproachUpdate() { 
-	worldTransform_.translation_.z -= 0.1f; 
+	worldTransform_.translation_.z -= 0.0f; 
 	//発射タイマーをデクリメント
 	fireTimer--;
 	//指定時間に達した
@@ -79,6 +69,10 @@ void Enemy::ApproachUpdate() {
 void Enemy::LeaveUpdate() { 
 	worldTransform_.translation_.x -= 0.2f;
 	worldTransform_.translation_.y += 0.2f; 
+
+	if (deathTimer_-- < 0) {
+		isDead_ = true;
+	}
 }
 
 void Enemy::Fire() {
@@ -101,7 +95,9 @@ void Enemy::Fire() {
 	newBullet->Initialize(model_, worldTransform_.translation_,velocity);
 
 	// 弾を登録する
-	bullets_.push_back(newBullet);
+	//bullets_.push_back(newBullet);
+
+	gamescene_->AddEnemyBullet(newBullet);
 }
 
 void Enemy::ApproachInitialize() {
@@ -109,7 +105,9 @@ void Enemy::ApproachInitialize() {
 	fireTimer = kFireInterval;
 }
 
-void Enemy::OnCollision() {}
+void Enemy::OnCollision() { 
+	isDead_ = true; 
+}
 
 Vector3 Enemy::GetWorldPosition() { 
 	// ワールド座標を入れる変数
