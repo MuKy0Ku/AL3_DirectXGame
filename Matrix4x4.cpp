@@ -92,6 +92,16 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 	return result;
 }
 
+Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, float minDepth, float maxDepth) {
+	Matrix4x4 result;
+	result = {
+	    width / 2,0,0,0,
+		0,-height / 2,0,0,
+		0,0,maxDepth - minDepth,0,
+	    left + (width / 2),top + (height / 2), minDepth,1};
+	return result;
+}
+
 Matrix4x4 Inverse(const Matrix4x4& m) { 
 	Matrix4x4 result{};
 	float determinant = m.m[0][0] * m.m[1][1] * m.m[2][2] * m.m[3][3] +
@@ -184,6 +194,29 @@ Matrix4x4 Inverse(const Matrix4x4& m) {
 	                       m.m[0][2] * m.m[1][0] * m.m[2][1] - m.m[0][2] * m.m[1][1] * m.m[2][0] -
 	                       m.m[0][1] * m.m[1][0] * m.m[2][2] - m.m[0][0] * m.m[1][2] * m.m[2][1]);
 	return result;
+}
+
+Vector3 Transform(const Vector3& vector, const Matrix4x4& m) { 
+	Vector3 result;
+	result.x = vector.x * m.m[0][0] + vector.y * m.m[1][0] + vector.z * m.m[2][0] +
+	           1.0f * m.m[3][0];
+	result.y = vector.x * m.m[0][1] + vector.y * m.m[1][1] + vector.z * m.m[2][1] +
+	           1.0f * m.m[3][1];
+	result.z = vector.x * m.m[0][2] + vector.y * m.m[1][2] + vector.z * m.m[2][2] +
+	           1.0f * m.m[3][2];
+	float w = vector.x * m.m[0][3] + vector.y * m.m[1][3] + vector.z * m.m[2][3] +
+	           1.0f * m.m[3][3];
+
+	result.x /= w;
+	result.y /= w;
+	result.z /= w;
+	return result;
+}
+
+Vector3 Normalize(const Vector3& v) { 
+	float result;
+	result = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+	return {v.x / result, v.y / result, v.z / result};
 }
 
 Matrix4x4& operator*=(Matrix4x4& m1, const Matrix4x4& m2) 

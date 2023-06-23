@@ -33,6 +33,10 @@ void GameScene::Initialize() {
 	model_ = Model::Create();
 	viewProjection_.Initialize();
 	Vector3 playerPosition(0, 0, 40);
+	
+	//レティクルのテクスチャ
+	TextureManager::Load("target.png");
+	
 	player_ = new Player();
 	player_->Initialize(model_, playerHandle_, playerPosition);
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
@@ -56,7 +60,7 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() { 
-	player_->Update();
+	player_->Update(viewProjection_);
 	debugCamera_->Update();
 	skydome_->Update();
 	railCamera_->Update();
@@ -155,11 +159,11 @@ void GameScene::Draw() {
 #pragma region 前景スプライト描画
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
-
+	
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-
+    player_->DrawUI();
 	// スプライト描画後処理
 	Sprite::PostDraw();
 

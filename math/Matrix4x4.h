@@ -24,8 +24,16 @@ Matrix4x4 MakeTranslation(Vector3 trans);
 //アフィン変換行列
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vector3& trans);
 
+//ビューポート変換行列
+Matrix4x4 MakeViewportMatrix(
+    float left, float top, float width, float height, float minDepth, float maxDepth);
+
 //逆行列
 Matrix4x4 Inverse(const Matrix4x4& m);
+
+Vector3 Transform(const Vector3& vector, const Matrix4x4& m);
+
+Vector3 Normalize(const Vector3& v);
 
 //代入演算子オーバーロード
 Matrix4x4& operator*=(Matrix4x4& m1, const Matrix4x4& m2);

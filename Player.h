@@ -5,6 +5,7 @@
 #include"Input.h"
 #include"PlayerBullet.h"
 #include<list>
+#include"Sprite.h"
 
 
 
@@ -23,12 +24,14 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(ViewProjection& viewProjection);
 	
 	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw(ViewProjection&viewProjection);
+
+	void DrawUI();
 
 	void Attack();
     
@@ -63,6 +66,11 @@ public:
 	std::list<PlayerBullet*> bullets_;
 	//PlayerBullet* bullet_ = nullptr;
 
-	
-	
+	//3Dレティクル用ワールドトランスフォーム
+	WorldTransform worldTransform3Dreticle_;
+
+	//2Dレティクル用スプライト
+	Sprite* sprite2DReticle_ = nullptr;
+
+	Sprite* sprite_ = nullptr;
 };

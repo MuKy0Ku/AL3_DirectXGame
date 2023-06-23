@@ -114,6 +114,7 @@
     <ClCompile Include="EnemyBullet.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtility.cpp" />
+    <ClCompile Include="math\Vector3.cpp" />
     <ClCompile Include="Matrix4x4.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerBullet.cpp" />

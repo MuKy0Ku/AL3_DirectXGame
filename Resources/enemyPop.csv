@@ -1,11 +1,11 @@
 // ƒRƒ}ƒ“ƒh,x,y,z
-WAIT,60,,
+WAIT,90,,
 POP,6,8,80
-WAIT,60,,
+WAIT,90,,
 POP,-6,8,80
-WAIT,60,,
+WAIT,90,,
 POP,12,-8,80
-WAIT,60,,
+WAIT,90,,
 POP,-12,-8,80
-WAIT,60,,
+WAIT,90,,
 POP,0,0,80
