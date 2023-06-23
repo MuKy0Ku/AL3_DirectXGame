@@ -160,6 +160,8 @@ void Player::Draw(ViewProjection& viewProjection) {
 	}
 }
 
+void Player::DrawUI() {}
+
 void Player::Attack() { 
 	if (input_->TriggerKey(DIK_SPACE)) {
 		//弾の速度
