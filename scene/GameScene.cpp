@@ -32,18 +32,17 @@ void GameScene::Initialize() {
 	playerHandle_ = TextureManager::Load("sample.png");
 	model_ = Model::Create();
 	viewProjection_.Initialize();
-	Vector3 playerPosition(0, 0, 40);
 	
 	//レティクルのテクスチャ
 	TextureManager::Load("target.png");
-	
+
+	Vector3 playerPosition(0, 0, 40);
 	player_ = new Player();
 	player_->Initialize(model_, playerHandle_, playerPosition);
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 	
-
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 	skydome_ = new Skydome();
 	skydome_->Initialize(modelSkydome_);

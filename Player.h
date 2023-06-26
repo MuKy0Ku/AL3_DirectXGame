@@ -71,6 +71,4 @@ public:
 
 	//2Dレティクル用スプライト
 	Sprite* sprite2DReticle_ = nullptr;
-
-	Sprite* sprite_ = nullptr;
 };

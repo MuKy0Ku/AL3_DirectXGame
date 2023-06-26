@@ -17,6 +17,12 @@ void Player::Initialize(Model* model, uint32_t textureHandle, const Vector3& pos
 	model_ = model;
 	textureHandle_ = textureHandle;
 
+	// レティクル用テクスチャ取得
+	uint32_t textureReticle = TextureManager::Load("target.png");
+
+	// スプライト生成
+	sprite2DReticle_ = Sprite::Create(textureReticle, {640, 360}, {1, 1, 1, 1}, {(0.5f), (0.5f)});
+
 	worldTransform_.Initialize();
 
 	worldTransform_.translation_ = position;
@@ -25,12 +31,6 @@ void Player::Initialize(Model* model, uint32_t textureHandle, const Vector3& pos
 
 	//3Dレティクルのワールドトランスフォーム初期化
 	worldTransform3Dreticle_.Initialize();
-
-	//レティクル用テクスチャ取得
-	uint32_t textureReticle = TextureManager::Load("target.png");
-
-	//スプライト生成
-	sprite2DReticle_ = Sprite::Create(textureReticle, {640, 360}, {1, 1, 1, 1}, {(0.5f), (0.5f)});
 }
 
 void Player::Update(ViewProjection& viewProjection) { 
@@ -154,13 +154,15 @@ void Player::Update(ViewProjection& viewProjection) {
 
 void Player::Draw(ViewProjection& viewProjection) { 
     model_->Draw(worldTransform_, viewProjection, textureHandle_);
-	model_->Draw(worldTransform3Dreticle_, viewProjection, textureHandle_);
+	//model_->Draw(worldTransform3Dreticle_, viewProjection, textureHandle_);
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(viewProjection);
 	}
 }
 
-void Player::DrawUI() {}
+void Player::DrawUI() { 
+	sprite2DReticle_->Draw(); 
+}
 
 void Player::Attack() { 
 	if (input_->TriggerKey(DIK_SPACE)) {
