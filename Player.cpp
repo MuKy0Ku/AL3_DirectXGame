@@ -194,7 +194,9 @@ void Player::Update(ViewProjection& viewProjection) {
 	//ImGui::Text("2DReticle:(%f,%f)",)
 	ImGui::Text("Near:(%+.2f,%+.2f,%+.2f)", posNear.x, posNear.y, posNear.z);
 	ImGui::Text("Far:(%+.2f,%+.2f,%+.2f)", posFar.x, posFar.y, posFar.z);
-	//ImGui::Text("3DReticle(%+.2f,%+.2f,%+.2f)"worldTransform3Dreticle_.):
+	ImGui::Text("3DReticle(%+.2f,%+.2f,%+.2f)", worldTransform3Dreticle_.translation_.x,
+	    worldTransform3Dreticle_.translation_.y, worldTransform3Dreticle_.translation_.z);
+	ImGui::End();
 }
 
 void Player::Draw(ViewProjection& viewProjection) { 
