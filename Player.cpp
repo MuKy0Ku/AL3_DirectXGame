@@ -34,7 +34,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle, const Vector3& pos
 }
 
 void Player::Update(ViewProjection& viewProjection) { 
-	Vector3 positionReticle = worldTransform3Dreticle_.translation_;
+	/*Vector3 positionReticle = worldTransform3Dreticle_.translation_;
 
 	//ビューポート行列
 	Matrix4x4 matViewport = MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
@@ -47,7 +47,46 @@ void Player::Update(ViewProjection& viewProjection) {
 	positionReticle = Transform(positionReticle, matviewProjectionViewport);
 
 	//スプライトのレティクルに座標設定
-	sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
+	sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));*/
+
+	// ビューポート行列
+	Matrix4x4 matViewport =
+	    MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+
+	POINT mousePosision;
+	//マウス座標(スクリーン座標)を取得する
+	GetCursorPos(&mousePosision);
+
+	//クライアントエリア座標に変換する
+	HWND hwnd = WinApp::GetInstance()->GetHwnd();
+	ScreenToClient(hwnd, &mousePosision);
+
+	//マウス座標を2Dレティクルのスプライトに代入する
+	sprite2DReticle_->SetPosition(Vector2(mousePosision.x,mousePosision.y));
+
+	//ビュープロジェクションビューポート合成行列
+	Matrix4x4 matVPV = viewProjection.matView * viewProjection.matProjection * matViewport;
+
+	//合成行列の逆行列を計算する
+	Matrix4x4 matInverseVPV = Inverse(matVPV);
+
+	//スクリーン座標
+	Vector3 posNear = Vector3();
+	Vector3 posFar = Vector3();
+
+	//スクリーン座標系からワールド座標系へ
+	posNear = Transform(posNear, matInverseVPV);
+	posFar = Transform(posFar, matInverseVPV);
+
+	//マウスレイの方向
+	Vector3 mouseDirection = {posNear.x - posFar.x, posNear.y - posFar.y, posNear.z - posFar.z};
+	mouseDirection = Normalize(mouseDirection);
+
+	//カメラから照準オブジェクトの距離
+	const float kDistanceTestObject=
+
+
+
 
 	//デスフラグの立った弾を削除
 	bullets_.remove_if([](PlayerBullet* bullet) {
@@ -131,10 +170,10 @@ void Player::Update(ViewProjection& viewProjection) {
 	    dir.z * kDistancePlayerTo3DReticle,
 	};
 	//3Dレティクルの座標を設定
-	worldTransform3Dreticle_.translation_ = { worldTransform_.translation_.x + offset.x,
+	/*worldTransform3Dreticle_.translation_ = { worldTransform_.translation_.x + offset.x,
 	                                          worldTransform_.translation_.y + offset.y, 
 		                                      worldTransform_.translation_.z + offset.z};
-	worldTransform3Dreticle_.UpdateMatrix();
+	worldTransform3Dreticle_.UpdateMatrix();*/
 
 
 #ifdef _DEBUG
@@ -150,6 +189,12 @@ void Player::Update(ViewProjection& viewProjection) {
 	worldTransform_.translation_ = {sliderValue[0], sliderValue[1], sliderValue[2]};
 	ImGui::End();
 #endif // _DEBUG
+
+	ImGui::Begin("Player");
+	//ImGui::Text("2DReticle:(%f,%f)",)
+	ImGui::Text("Near:(%+.2f,%+.2f,%+.2f)", posNear.x, posNear.y, posNear.z);
+	ImGui::Text("Far:(%+.2f,%+.2f,%+.2f)", posFar.x, posFar.y, posFar.z);
+	//ImGui::Text("3DReticle(%+.2f,%+.2f,%+.2f)"worldTransform3Dreticle_.):
 }
 
 void Player::Draw(ViewProjection& viewProjection) { 

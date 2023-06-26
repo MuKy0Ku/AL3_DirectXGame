@@ -28,6 +28,7 @@ void RailCamera::Update() {
 	viewProjection_.TransferMatrix();
 
 	
+#ifdef  _DEBUG
 	//カメラの座標を画面表示する処理
 	ImGui::SetNextWindowSize({300, 100});
 
@@ -44,4 +45,5 @@ void RailCamera::Update() {
 	worldTransform_.translation_ = {sliderValue[0], sliderValue[1], sliderValue[2]};
 	worldTransform_.rotation_ = {sliderValueRot[0], sliderValueRot[1], sliderValueRot[2]};
 	ImGui::End();
+#endif //  _DEBUG
 }
