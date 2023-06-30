@@ -56,15 +56,13 @@ void Player::Update(ViewProjection& viewProjection) {
 	POINT mousePosision;
 	//マウス座標(スクリーン座標)を取得する
 	GetCursorPos(&mousePosision);
-	float a = mousePosision.x;
-	float b = mousePosision.y;
 
 	//クライアントエリア座標に変換する
 	HWND hwnd = WinApp::GetInstance()->GetHwnd();
 	ScreenToClient(hwnd, &mousePosision);
 
 	//マウス座標を2Dレティクルのスプライトに代入する
-	sprite2DReticle_->SetPosition(Vector2(a,b));
+	sprite2DReticle_->SetPosition(Vector2(mousePosision.x,mousePosision.y));
 	
 	//ビュープロジェクションビューポート合成行列
 	Matrix4x4 matVPV = viewProjection.matView * viewProjection.matProjection * matViewport;
