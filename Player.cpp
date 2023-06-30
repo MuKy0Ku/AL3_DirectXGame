@@ -21,7 +21,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle, const Vector3& pos
 	uint32_t textureReticle = TextureManager::Load("target.png");
 
 	// スプライト生成
-	sprite2DReticle_ = Sprite::Create(textureReticle, {640, 360}, {1, 1, 1, 1}, {(0.5f), (0.5f)});
+	sprite2DReticle_ = Sprite::Create(textureReticle, pos, {1, 1, 1, 1}, {(0.5f), (0.5f)});
 
 	worldTransform_.Initialize();
 
@@ -56,14 +56,16 @@ void Player::Update(ViewProjection& viewProjection) {
 	POINT mousePosision;
 	//マウス座標(スクリーン座標)を取得する
 	GetCursorPos(&mousePosision);
+	float a = mousePosision.x;
+	float b = mousePosision.y;
 
 	//クライアントエリア座標に変換する
 	HWND hwnd = WinApp::GetInstance()->GetHwnd();
 	ScreenToClient(hwnd, &mousePosision);
 
 	//マウス座標を2Dレティクルのスプライトに代入する
-	sprite2DReticle_->SetPosition(Vector2(mousePosision.x,mousePosision.y));
-
+	sprite2DReticle_->SetPosition(Vector2(a,b));
+	
 	//ビュープロジェクションビューポート合成行列
 	Matrix4x4 matVPV = viewProjection.matView * viewProjection.matProjection * matViewport;
 
@@ -71,8 +73,8 @@ void Player::Update(ViewProjection& viewProjection) {
 	Matrix4x4 matInverseVPV = Inverse(matVPV);
 
 	//スクリーン座標
-	Vector3 posNear = Vector3();
-	Vector3 posFar = Vector3();
+	Vector3 posNear = Vector3(mousePosision.x, mousePosision.y, 0);
+	Vector3 posFar = Vector3(mousePosision.x, mousePosision.y, 1);
 
 	//スクリーン座標系からワールド座標系へ
 	posNear = Transform(posNear, matInverseVPV);
@@ -83,10 +85,13 @@ void Player::Update(ViewProjection& viewProjection) {
 	mouseDirection = Normalize(mouseDirection);
 
 	//カメラから照準オブジェクトの距離
-	const float kDistanceTestObject=
+	const float kDistanceTestObject = 30;
+	worldTransform3Dreticle_.translation_.x = posNear.x - mouseDirection.x + kDistanceTestObject;
+	worldTransform3Dreticle_.translation_.y = posNear.y - mouseDirection.y + kDistanceTestObject;
+	worldTransform3Dreticle_.translation_.z = posNear.z - mouseDirection.z + kDistanceTestObject;
 
-
-
+	//worldTransform3DReticle_のワールド行列更新と転送
+	worldTransform3Dreticle_.UpdateMatrix();
 
 	//デスフラグの立った弾を削除
 	bullets_.remove_if([](PlayerBullet* bullet) {

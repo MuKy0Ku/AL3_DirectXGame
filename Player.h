@@ -71,4 +71,6 @@ public:
 
 	//2Dレティクル用スプライト
 	Sprite* sprite2DReticle_ = nullptr;
+
+	Vector2 pos = {640, 360};
 };
