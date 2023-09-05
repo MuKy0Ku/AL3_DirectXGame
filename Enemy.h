@@ -38,7 +38,7 @@ public:
 	void Fire();
 
 	//発射間隔
-	static const int kFireInterval = 60;
+	static const int kFireInterval = 90;
 
 	//接近フェーズ初期化
 	void ApproachInitialize();
@@ -55,7 +55,7 @@ public:
 	Vector3 GetWorldPosition();
 
 	const float GetRadius() { return radius_; }
-	const float radius_ = 1.0f;
+	const float radius_ = 2.0f;
 
 	// 弾リストを取得
 	//const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
@@ -70,7 +70,7 @@ private:
 		Leave,    // 離脱する
 	};
 	//フェーズ
-	Phase phase_ = Phase::Approach;
+	Phase phase_ = Phase::Leave;
 
 	//弾
 	//std::list<EnemyBullet*> bullets_;
@@ -81,6 +81,7 @@ private:
 
 	//発射タイマー
 	int32_t fireTimer = 0;
+	int32_t moveTimer = 120;
 
 	//自キャラ
 	Player* player_ = nullptr;

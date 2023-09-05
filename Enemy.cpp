@@ -16,7 +16,7 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 	assert(model);
 
 	model_ = model;
-	textureHundle_ = TextureManager::Load("sample.png");
+	textureHundle_ = TextureManager::Load("red.png");
 
 	worldTransform_.Initialize();
 	// 引数で受け取った初期座標をセット
@@ -67,18 +67,38 @@ void Enemy::ApproachUpdate() {
 }
 
 void Enemy::LeaveUpdate() { 
-	worldTransform_.translation_.x -= 0.2f;
-	worldTransform_.translation_.y += 0.2f; 
+	moveTimer--;
+	if (moveTimer < 0) {
+		moveTimer = 120;
+	}
+	if (moveTimer <= 60) {
+		worldTransform_.translation_.x -= 0.1f;
+	}
+	if (moveTimer > 60 && moveTimer <= 120) {
+		worldTransform_.translation_.x += 0.1f;
+	}
+	
+	worldTransform_.translation_.y += 0.0f; 
 
-	if (deathTimer_-- < 0) {
+	/*if (deathTimer_-- < 0) {
 		isDead_ = true;
+	}*/
+
+	// 発射タイマーをデクリメント
+	fireTimer--;
+	// 指定時間に達した
+	if (fireTimer <= 0) {
+		// 弾を発射
+		Fire();
+		// 発射タイマーを初期化
+		fireTimer = kFireInterval;
 	}
 }
 
 void Enemy::Fire() {
 	assert(player_);
 	// 弾の速度
-	const float kBulletSpeed = 1.0f;
+	const float kBulletSpeed = 1.8f;
 
 	Vector3 playerPos;
 	Vector3 diff;

@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include"WorldTransform.h"
 #include"ViewProjection.h"
+#include"Input.h"
 
 class RailCamera {
 public:
@@ -16,4 +17,7 @@ private:
 	WorldTransform worldTransform_;
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
+
+	// キーボード入力
+	Input* input_ = nullptr;
 };

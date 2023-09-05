@@ -1,5 +1,6 @@
 ﻿#include "RailCamera.h"
 #include"ImGuiManager.h"
+#include"Input.h"
 
 void RailCamera::Initialize(Vector3 trans, Vector3 rot) { 
 	worldTransform_.Initialize();
@@ -27,6 +28,19 @@ void RailCamera::Update() {
 	viewProjection_.matView = Inverse(worldTransform_.matWorld_);
 	viewProjection_.TransferMatrix();
 
+	//// 押した方向で移動ベクトルを変更(左右)
+	//if (input_->PushKey(DIK_A)) {
+	//	move.x -= 0.2f;
+	//} else if (input_->PushKey(DIK_D)) {
+	//	move.x += 0.2f;
+	//}
+
+	//// 押した方向で移動ベクトルを変更(上下)
+	//if (input_->PushKey(DIK_W)) {
+	//	move.y += 0.2f;
+	//} else if (input_->PushKey(DIK_S)) {
+	//	move.y -= 0.2f;
+	//}
 	
 #ifdef  _DEBUG
 	//カメラの座標を画面表示する処理

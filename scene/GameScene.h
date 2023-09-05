@@ -72,6 +72,11 @@ public: // メンバ関数
     /// </summary>
 	void UpdateEnemyPopCommands();
 
+	int cool = 30;
+
+	int a = 0;
+
+    Skydome* skydome_ = nullptr;
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -93,7 +98,7 @@ private: // メンバ変数
 	WorldTransform worldTransform_;
 
 	//skydome
-	Skydome* skydome_ = nullptr;
+	
 	Model* modelSkydome_ = nullptr;
 
 	//レールカメラ
@@ -106,4 +111,7 @@ private: // メンバ変数
 
 	bool waitFlag = false;
 	int waitTimer;
+
+	int deathFlag = 0;
+	int clearFlag = 0;
 };

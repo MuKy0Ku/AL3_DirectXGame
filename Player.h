@@ -33,6 +33,14 @@ public:
 
 	void DrawUI();
 
+	void titleDraw();
+
+	void menuDraw();
+
+	void clearDraw();
+
+	void overDraw();
+
 	void Attack();
     
 	//衝突を検出したら呼び出されるコールバック関数
@@ -47,7 +55,7 @@ public:
 	Vector3 GetWorldPosition();
 
 	const float GetRadius() { return radius_; }
-	const float radius_ = 1.0f;
+	const float radius_ = 2.0f;
 	
 	// 弾リストを取得
 	const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
@@ -71,6 +79,11 @@ public:
 
 	//2Dレティクル用スプライト
 	Sprite* sprite2DReticle_ = nullptr;
+
+	Sprite* title_ = nullptr;
+	Sprite* menu_ = nullptr;
+	Sprite* clear_ = nullptr;
+	Sprite* over_ = nullptr;
 
 	Vector2 spritePos = {640, 360};
 };

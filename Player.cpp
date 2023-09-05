@@ -9,6 +9,7 @@ Player::~Player() {
 		delete bullet;
 	}
 	delete sprite2DReticle_;
+	delete title_;
 }
 
 void Player::Initialize(Model* model, uint32_t textureHandle, const Vector3& position) { 
@@ -20,8 +21,24 @@ void Player::Initialize(Model* model, uint32_t textureHandle, const Vector3& pos
 	// レティクル用テクスチャ取得
 	uint32_t textureReticle = TextureManager::Load("target.png");
 
+	uint32_t Title = TextureManager::Load("title.png");
+
+	uint32_t menu = TextureManager::Load("menu.png");
+
+	uint32_t clear = TextureManager::Load("clear.png");
+
+	uint32_t over = TextureManager::Load("over.png");
+
 	// スプライト生成
 	sprite2DReticle_ = Sprite::Create(textureReticle, spritePos, {1, 1, 1, 1}, {(0.5f), (0.5f)});
+
+	title_ = Sprite::Create(Title, {640, 360}, {1, 1, 1, 1}, {(0.5f), (0.5f)});
+
+	menu_ = Sprite::Create(menu, {640, 360}, {1, 1, 1, 1}, {(0.5f), (0.5f)});
+
+	clear_ = Sprite::Create(clear, {640, 360}, {1, 1, 1, 1}, {(0.5f), (0.5f)});
+
+	over_ = Sprite::Create(over, {640, 360}, {1, 1, 1, 1}, {(0.5f), (0.5f)});
 
 	worldTransform_.Initialize();
 
@@ -107,28 +124,28 @@ void Player::Update(ViewProjection& viewProjection) {
 	const float kCharacterSpeed = 0.2f;
 	
 	// 押した方向で移動ベクトルを変更(左右)
-	if (input_->PushKey(DIK_LEFT)) {
+	if (input_->PushKey(DIK_A)) {
 		move.x -= kCharacterSpeed;
-	}else if (input_->PushKey(DIK_RIGHT)) {
+	}else if (input_->PushKey(DIK_D)) {
 		move.x += kCharacterSpeed;
 	}
 
 	// 押した方向で移動ベクトルを変更(上下)
-	if (input_->PushKey(DIK_UP)) {
+	if (input_->PushKey(DIK_W)) {
 		move.y += kCharacterSpeed;
-	}else if (input_->PushKey(DIK_DOWN)) {
+	}else if (input_->PushKey(DIK_S)) {
 		move.y -= kCharacterSpeed;
 	}
 	
 	//キャラクター旋回
 	//押した方向で移動ベクトルを変更
-    const float kRotSpeed = 0.02f;
-	if (input_->PushKey(DIK_A)) {
+   /* const float kRotSpeed = 0.02f;
+	if (input_->PushKey(DIK_A)) {w
 		worldTransform_.rotation_.y -= kRotSpeed;
 	}
 	if (input_->PushKey(DIK_D)) {
 		worldTransform_.rotation_.y += kRotSpeed;
-	}
+	}*/
 
 	//キャラクター攻撃処理
 	Attack();
@@ -140,7 +157,7 @@ void Player::Update(ViewProjection& viewProjection) {
 
 	//移動限界座標
 	const float kMoveLimitX = 20.0f;
-	const float kMoveLimitY = 20.0f;
+	const float kMoveLimitY = 15.0f;
 
 	//範囲を超えない処理
 	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
@@ -214,8 +231,24 @@ void Player::DrawUI() {
 	sprite2DReticle_->Draw(); 
 }
 
+void Player::titleDraw() {
+    title_->Draw(); 
+}
+
+void Player::menuDraw() { 
+	menu_->Draw(); 
+}
+
+void Player::clearDraw() { 
+	clear_->Draw(); 
+}
+
+void Player::overDraw() { 
+	over_->Draw(); 
+}
+
 void Player::Attack() { 
-	if (input_->TriggerKey(DIK_SPACE)) {
+	if (input_->IsTriggerMouse(0)) {
 		//弾の速度
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
